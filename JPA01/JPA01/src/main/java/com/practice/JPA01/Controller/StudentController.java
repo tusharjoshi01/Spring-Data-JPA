@@ -60,6 +60,7 @@ public class StudentController {
     public List<Student> DeleteStdById(@PathVariable Long id){
          studentRepo.deleteById(id);
         return  studentRepo.findAll();
+
     }
 
 
