@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class EmployeeEntity {
 @Id
@@ -17,4 +19,8 @@ public class EmployeeEntity {
     private String email;
 
     private Integer age;
+
+    private LocalDate dateOfJoining;
+
+    private boolean isActive;
 }
