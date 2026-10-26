@@ -36,9 +36,17 @@ return   employeeEntities
           .collect(Collectors.toList());
     }
 
-    public EmployeeDTO createEmployee(EmployeeDTO inputEntity) {
-        EmployeeEntity toSaveEntity = modelMapper.map(inputEntity,EmployeeEntity.class);
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+        EmployeeEntity toSaveEntity = modelMapper.map(employeeDTO,EmployeeEntity.class);
        EmployeeEntity savedEmployeeEntities=employeeRepository.save(toSaveEntity);
        return modelMapper.map(savedEmployeeEntities,EmployeeDTO.class);
+    }
+
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO){
+        EmployeeEntity exit= employeeRepository.findById(id).orElseThrow(()-> new RuntimeException("id not found"));
+        employeeDTO.setId(id);
+        EmployeeEntity toSaveEntity = modelMapper.map(employeeDTO,EmployeeEntity.class);
+        EmployeeEntity savedEmployeeEntities=employeeRepository.save(toSaveEntity);
+        return modelMapper.map(savedEmployeeEntities,EmployeeDTO.class);
     }
 }
