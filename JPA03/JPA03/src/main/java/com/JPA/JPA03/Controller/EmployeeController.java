@@ -4,6 +4,7 @@ import com.JPA.JPA03.DTO.EmployeeDTO;
 import com.JPA.JPA03.Service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/emp")
@@ -33,5 +34,15 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public EmployeeDTO updateEmployee(@PathVariable Long id,@RequestBody EmployeeDTO employeeDTO){
         return employeeService.updateEmployee(id,employeeDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteById(@PathVariable Long id){
+      return employeeService.deleteById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public EmployeeDTO updatePartialEmployee(@PathVariable Long id, @RequestBody Map<String,Object> object){
+        return employeeService.updatePartialEmployee(id,object);
     }
 }
