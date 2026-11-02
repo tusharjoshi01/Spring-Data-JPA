@@ -3,9 +3,13 @@ package com.JPA.JPA03.Service;
 import com.JPA.JPA03.DTO.EmployeeDTO;
 import com.JPA.JPA03.Entity.EmployeeEntity;
 import com.JPA.JPA03.Repository.EmployeeRepository;
+import org.apache.el.util.ReflectionUtil;
+import org.aspectj.util.Reflection;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,10 +67,16 @@ return   employeeEntities
     }
 
 //here Map is checking for string as the variable type like name,email or else and Object is the actual value to inserted in that
-    public EmployeeDTO updatePartialEmployee(Long id, Map<String, Object> object) {
+    public EmployeeDTO updatePartialEmployee(Long id, Map<String, Object> upadtes) {
         boolean exits = exitById(id);
         if(!exits) return null;
         EmployeeEntity employeeEntity  = employeeRepository.findById(id).get();
+        upadtes.forEach((field,value)->{
+            Field fieldToBeUpdated= ReflectionUtils.getRequiredField(EmployeeEntity.class,field);
+            fieldToBeUpdated.setAccessible(true);
+            ReflectionUtils.setField(fieldToBeUpdated,employeeEntity,value);
+        });
+        return modelMapper.map(employeeRepository.save(employeeEntity),EmployeeDTO.class);
 
     }
 }

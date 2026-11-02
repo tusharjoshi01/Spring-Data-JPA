@@ -2,9 +2,13 @@ package com.JPA.JPA03.Controller;
 
 import com.JPA.JPA03.DTO.EmployeeDTO;
 import com.JPA.JPA03.Service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/emp")
@@ -18,8 +22,10 @@ public class EmployeeController {
 
     // FIXED: Changed "/Id" to "/{Id}" so Spring can capture the path variable [1]
     @GetMapping("/{Id}")
-    public EmployeeDTO getEmployeeById(@PathVariable Long Id) {
-        return employeeService.getEmployeeById(Id);
+    public ResponseEntity <EmployeeDTO> getEmployeeById(@PathVariable Long Id) {
+        EmployeeDTO employeeDTO =employeeService.getEmployeeById(Id);
+        if(employeeDTO == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employeeDTO);
     }
 
     @GetMapping
@@ -42,7 +48,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/{id}")
-    public EmployeeDTO updatePartialEmployee(@PathVariable Long id, @RequestBody Map<String,Object> object){
-        return employeeService.updatePartialEmployee(id,object);
+    public EmployeeDTO updatePartialEmployee(@PathVariable Long id, @RequestBody Map<String,Object> updates){
+        return employeeService.updatePartialEmployee(id,updates);
     }
 }
