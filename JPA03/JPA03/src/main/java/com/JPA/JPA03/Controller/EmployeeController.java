@@ -2,9 +2,11 @@ package com.JPA.JPA03.Controller;
 
 import com.JPA.JPA03.DTO.EmployeeDTO;
 import com.JPA.JPA03.Service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +35,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO savedEmployee =employeeService.createEmployee(employeeDTO);
         return new ResponseEntity<>(savedEmployee,HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id,@RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id,@Valid  @RequestBody EmployeeDTO employeeDTO){
         return ResponseEntity.ok(employeeService.updateEmployee(id,employeeDTO));
     }
 
@@ -50,7 +52,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updatePartialEmployee(@PathVariable Long id, @RequestBody Map<String,Object> updates){
+    public ResponseEntity<EmployeeDTO> updatePartialEmployee( @PathVariable Long id, @RequestBody Map<String,Object> updates){
         EmployeeDTO employeeDTO= employeeService.updatePartialEmployee(id,updates);
         if (employeeDTO==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(employeeDTO);
