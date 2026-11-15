@@ -2,11 +2,10 @@ package com.JPA.JPA03.Controller;
 
 import com.JPA.JPA03.DTO.EmployeeDTO;
 import com.JPA.JPA03.Service.EmployeeService;
+import com.JPA.JPA03.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +25,11 @@ public class EmployeeController {
     @GetMapping("/{Id}")
     public ResponseEntity <EmployeeDTO> getEmployeeById(@PathVariable Long Id) {
       Optional  <EmployeeDTO> employeeDTO =employeeService.getEmployeeById(Id);
-      return employeeDTO.map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1)).orElse(ResponseEntity.notFound().build());
+      return employeeDTO
+               .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
+              .orElseThrow(()-> new ResourceNotFoundException("user not found"));
     }
+
 
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployee() {
