@@ -1,12 +1,11 @@
 package SpringDataJPA.HospitalManagmentSystem.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +24,13 @@ public class Appointment {
     private String reason;
 
     @ManyToOne
-    @JoinColumn(name = "patientId",nullable = false)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
+
+    // MANY appointments belong to ONE doctor
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private Doctor doctor;
+
 
 }

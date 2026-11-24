@@ -22,6 +22,12 @@ public class Doctor {
     @Column(nullable = false,length = 50,unique = true)
     private String email;
 
+    // INVERSE side: doctor is the field name inside Appointment
     @OneToMany(mappedBy = "doctor")
     private Set<Appointment> appointments = new HashSet<>();
+
+    // INVERSE side: doctors is the field name inside Department
+    @ManyToMany(mappedBy = "doctors")
+    private Set<Department> departments = new HashSet<>();
+
 }

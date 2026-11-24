@@ -37,8 +37,9 @@ public class Patient {
     @JoinColumn(name = "patient_insurance")
     private Insurance insurance;
 
-
-    @OneToOne(mappedBy = "patient")
+    // INVERSE side: patient is the field name inside Appointment
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Set<Appointment> appointments = new HashSet<>();
 
 
